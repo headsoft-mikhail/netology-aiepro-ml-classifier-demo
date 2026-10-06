@@ -1,0 +1,52 @@
+# Local environments and secrets
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Python, tooling, builds
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.ty_cache/
+.ipynb_checkpoints/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+build/
+dist/
+
+# System/editor files
+.DS_Store
+.idea/
+.vscode/
+*.log
+
+# Downloaded/generated data (keep folder placeholders)
+/data/raw/*
+!/data/raw/.gitkeep
+/data/prepared/*
+!/data/prepared/.gitkeep
+/data/demo/*
+!/data/demo/.gitkeep
+
+# Local experiment tracking and runtime state
+/mlflow/*
+!/mlflow/artifacts/
+/mlflow/artifacts/*
+!/mlflow/artifacts/.gitkeep
+/runtime/*
+!/runtime/.gitkeep
+/mlruns/
+/artifacts/*
+!/artifacts/.gitkeep
+
+# Frontend dependencies, if introduced
+node_modules/
