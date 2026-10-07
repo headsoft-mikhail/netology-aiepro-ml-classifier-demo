@@ -1,9 +1,7 @@
 # Local environments and secrets
 .venv/
 venv/
-.env
 .env.*
-!.env.example
 *.pem
 *.key
 
@@ -29,24 +27,13 @@ dist/
 .vscode/
 *.log
 
-# Downloaded/generated data (keep folder placeholders)
-/data/raw/*
-!/data/raw/.gitkeep
-/data/prepared/*
-!/data/prepared/.gitkeep
-/data/demo/*
-!/data/demo/.gitkeep
-
-# Local experiment tracking and runtime state
-/mlflow/*
-!/mlflow/artifacts/
-/mlflow/artifacts/*
-!/mlflow/artifacts/.gitkeep
+# All generated data, tracking state, reports and logs
 /runtime/*
-!/runtime/.gitkeep
 /mlruns/
-/artifacts/*
-!/artifacts/.gitkeep
 
 # Frontend dependencies, if introduced
 node_modules/
+
+# Generated test reports and cache
+/tests/coverage.json
+/tests/pytest-cache/
