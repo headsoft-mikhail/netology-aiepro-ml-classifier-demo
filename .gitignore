@@ -1,39 +1,16 @@
-# Local environments and secrets
-.venv/
-venv/
-.env.*
-*.pem
-*.key
-
-# Python, tooling, builds
 __pycache__/
-*.py[cod]
-*.egg-info/
-.pytest_cache/
+.venv/
 .ruff_cache/
-.mypy_cache/
-.ty_cache/
 .ipynb_checkpoints/
-.coverage
-.coverage.*
-coverage.xml
-htmlcov/
-build/
-dist/
-
-# System/editor files
-.DS_Store
-.idea/
 .vscode/
 *.log
 
-# All generated data, tracking state, reports and logs
 /runtime/*
 /mlruns/
 
-# Frontend dependencies, if introduced
-node_modules/
+.coverage
+coverage.json
+pytest-cache/
+.pytest_cache/
 
-# Generated test reports and cache
-/tests/coverage.json
-/tests/pytest-cache/
+.DS_Store
