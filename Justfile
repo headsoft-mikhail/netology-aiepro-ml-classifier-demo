@@ -53,9 +53,19 @@ fetch_dataset: _import_env
 
 # Запустить MLflow в фоне. Настройки берутся из .env.
 mlflow-start: _import_env
+    #!/usr/bin/env bash
+    set -e
+    if lsof -tiTCP:"$MLFLOW_PORT" -sTCP:LISTEN >/dev/null; then
+        echo "Порт $MLFLOW_PORT уже занят — повторный запуск пропущен"
+        exit 0
+    fi
     mkdir -p "runtime/mlflow/artifacts"
-    nohup uv run --group tracking mlflow server --backend-store-uri "sqlite:///runtime/mlflow/mlflow.db" --artifacts-destination "runtime/mlflow/artifacts" --serve-artifacts --host 127.0.0.1 --port "$MLFLOW_PORT" --workers 1 > "runtime/mlflow/logs.log" 2>&1 < /dev/null &
-    @echo "MLflow: http://127.0.0.1:$MLFLOW_PORT — запуск в фоне, лог: runtime/mlflow/logs.log"
+    nohup uv run --group tracking mlflow server \
+        --backend-store-uri "sqlite:///runtime/mlflow/mlflow.db" \
+        --artifacts-destination "runtime/mlflow/artifacts" \
+        --serve-artifacts --host 127.0.0.1 --port "$MLFLOW_PORT" --workers 1 \
+        > "runtime/mlflow/logs.log" 2>&1 < /dev/null &
+    echo "MLflow: http://127.0.0.1:$MLFLOW_PORT — запуск в фоне, лог: runtime/mlflow/logs.log"
 
 mlflow-logs: _import_env
     tail -f "runtime/mlflow/logs.log"
