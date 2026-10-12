@@ -9,8 +9,10 @@ dependencies = ["pydantic-settings", "requests"]
 dev = ["pytest", "pytest-cov", "ruff", "ty", "auto-typing-final"]
 data = ["pandas", "numpy", "scikit-learn", "xlrd"]
 tracking = ["mlflow"]
+neural = ["torch"]
 research = [
     {include-group = "data"},
+    {include-group = "neural"},
     "jupyterlab", "nbconvert", "nbformat", "ipykernel", "ipywidgets", "matplotlib", "seaborn", "tabulate", "optuna",
 ]
 
