@@ -25,11 +25,11 @@ def predict(
     return predictions_repository.predict(payload)
 
 
-@ROUTER_OBJ.get("/demo/cases", response_model=list[models.DemoCase], tags=["demo"])
+@ROUTER_OBJ.get("/demo/cases", response_model=list[models.DemoAnalysis], tags=["demo"])
 def demo_cases(
     app_cache: AppCache = modern_di_fastapi.FromDI(AppCache),
-) -> list[models.DemoCase]:
-    return [models.DemoCase(case_id=case_id) for case_id in app_cache.demo_cases]
+) -> list[models.DemoAnalysis]:
+    return list(app_cache.demo_cases.values())
 
 
 @ROUTER_OBJ.post("/demo/records", response_model=models.AnalysisRecord, status_code=201, tags=["demo"])
@@ -39,11 +39,11 @@ def submit_demo(
 ) -> models.AnalysisDetails:
     record: typing.Final = submit_use_case(payload)
     if record is None:
-        raise fastapi.HTTPException(status_code=404, detail="Тестовый пример не найден")
+        raise fastapi.HTTPException(status_code=404, detail="Контрольный пример не найден")
     return record
 
 
-@ROUTER_OBJ.get("/records", response_model=list[models.AnalysisRecord], tags=["records"])
+@ROUTER_OBJ.get("/records", response_model=list[models.AnalysisDetails], tags=["records"])
 def records(
     analysis_repository: AnalysisRepository = modern_di_fastapi.FromDI(AnalysisRepository),
 ) -> list[models.AnalysisDetails]:
@@ -59,3 +59,13 @@ def record_details(
     if record is None:
         raise fastapi.HTTPException(status_code=404, detail="Исследование не найдено")
     return record
+
+
+@ROUTER_OBJ.delete("/records/{record_id}", status_code=204, tags=["records"])
+def delete_record(
+    record_id: str,
+    analysis_repository: AnalysisRepository = modern_di_fastapi.FromDI(AnalysisRepository),
+) -> fastapi.Response:
+    if not analysis_repository.delete(record_id):
+        raise fastapi.HTTPException(status_code=404, detail="Исследование не найдено")
+    return fastapi.Response(status_code=204)

@@ -6,6 +6,7 @@ from contextlib import asynccontextmanager
 import fastapi
 import modern_di
 import modern_di_fastapi
+from fastapi.staticfiles import StaticFiles
 
 from classifier.api import ioc, settings
 from classifier.api.repositories.cache_repository import AppCache
@@ -24,6 +25,7 @@ class AppBuilder:
             lifespan=self.lifespan_manager,
         )
         self.app.include_router(ROUTER_OBJ)
+        self.app.mount("/", StaticFiles(directory=settings.api_settings.frontend_dir, html=True), name="frontend")
         di_container: typing.Final = modern_di.Container(
             groups=ioc.ALL_GROUPS,
             context={ServiceSettings: service_settings or settings.service_settings},

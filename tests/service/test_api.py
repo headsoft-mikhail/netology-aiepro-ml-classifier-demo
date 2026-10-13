@@ -44,7 +44,10 @@ def test_health_and_prediction(api_service_settings, analysis_features):
 
 def test_demo_submission_stores_predictions_features_and_reference(api_service_settings, tmp_path):
     with create_test_client(api_service_settings) as client:
-        assert client.get("/demo/cases").json() == [{"case_id": "D01"}]
+        demo_cases: typing.Final = client.get("/demo/cases").json()
+        assert demo_cases[0]["case_id"] == "D01"
+        assert demo_cases[0]["reference"]["nsp"]["code"] == 1
+        assert len(demo_cases[0]["features"]) == 21  # noqa: PLR2004 — входные признаки для страницы.
         first: typing.Final = client.post("/demo/records", json={"case_id": "D01"})
         second: typing.Final = client.post("/demo/records", json={"case_id": "D01"})
         assert first.status_code == status.HTTP_201_CREATED
@@ -124,3 +127,13 @@ def test_database_failure_does_not_return_success(api_service_settings):
         with pytest.raises(sqlite3.IntegrityError):
             client.post("/demo/records", json={"case_id": "D01"})
         assert client.get("/records").json() == []
+
+
+def test_delete_record_is_persistent(api_service_settings):
+    with create_test_client(api_service_settings) as client:
+        record_id: typing.Final = client.post("/demo/records", json={"case_id": "D01"}).json()["record_id"]
+        assert client.delete(f"/records/{record_id}").status_code == status.HTTP_204_NO_CONTENT
+        assert client.get("/records").json() == []
+        assert client.delete(f"/records/{record_id}").status_code == status.HTTP_404_NOT_FOUND
+    with create_test_client(api_service_settings) as client:
+        assert client.get(f"/records/{record_id}").status_code == status.HTTP_404_NOT_FOUND

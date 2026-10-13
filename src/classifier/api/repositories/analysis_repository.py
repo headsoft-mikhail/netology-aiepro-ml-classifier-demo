@@ -28,3 +28,10 @@ class AnalysisRepository:
         ).fetchall()
         records: typing.Final = [models.AnalysisDetails.model_validate_json(row[0]) for row in rows]
         return sorted(records, key=lambda record: record.prediction.nsp.code, reverse=True)
+
+    def delete(self, record_id: str) -> bool:
+        cursor: typing.Final = self.database_connection.execute(
+            "DELETE FROM analyses WHERE record_id = ?",
+            (record_id,),
+        )
+        return cursor.rowcount > 0

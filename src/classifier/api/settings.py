@@ -20,6 +20,7 @@ class APISettings(BaseSettings):
 
     host: str = "127.0.0.1"
     port: int = Field(default=8001, ge=1, le=65535)
+    frontend_dir: Path = Path(dataset_schema.PROJECT_ROOT, "src/frontend")
     log_level: typing.Literal["critical", "error", "warning", "info", "debug"] = "info"
 
 

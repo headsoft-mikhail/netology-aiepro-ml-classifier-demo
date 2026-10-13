@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>КТГ · Исследования</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <script src="/js/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M3 17h7l3-8 5 15 3-7h8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span>КТГ<span class="brand-divider">/</span>Исследования</span>
+    </div>
+    <span class="demo-tag">Учебное демо</span>
+  </header>
+
+  <main>
+    <div class="page-heading">
+      <div><p class="eyebrow">МОНИТОРИНГ РЕЗУЛЬТАТОВ</p><h1>Поступившие исследования</h1><p class="subtitle">Оценка состояния и паттерна по показателям КТГ.</p></div>
+      <span class="sync-status" id="sync-status" role="status">Подключение…</span>
+    </div>
+    <div class="error-banner" id="error-banner" role="alert" hidden></div>
+
+    <section class="demo-panel" aria-labelledby="demo-title">
+      <div class="demo-heading"><h2 id="demo-title">Отправить контрольное исследование</h2><p>20 контрольных примеров с заранее известными метками.</p></div>
+      <form id="demo-form" class="demo-form">
+        <div class="case-field"><label for="case-select">Исследование</label><select id="case-select" required disabled><option value="">Загрузка примеров…</option></select></div>
+        <div class="truth-preview"><span class="field-label">Истинные метки</span><div class="badge-group" id="case-truth"><span class="muted">—</span></div></div>
+        <button class="primary-button" id="submit-button" type="submit" disabled><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4 20-7Z"/><path d="M22 2 11 13"/></svg><span id="submit-label">Отправить</span></button>
+      </form>
+      <div class="submit-feedback" id="submit-feedback" role="status" aria-live="polite"></div>
+    </section>
+
+    <section class="records-panel" aria-labelledby="records-title">
+      <div class="records-heading">
+        <div><h2 id="records-title">Исследования <span class="count-badge" id="record-count">0</span></h2><p>Метки в таблице — предсказания модели. Нажмите на строку, чтобы открыть все показатели.</p></div>
+        <label class="truth-toggle"><input id="show-truth" type="checkbox"><span>Показать истинные метки</span></label>
+      </div>
+      <div class="table-toolbar">
+        <div class="summary" aria-label="Количество исследований по предсказанному NSP">
+          <span class="summary-item pathological"><i></i>Патологические <strong id="count-pathological">0</strong></span>
+          <span class="summary-item suspect"><i></i>Подозрительные <strong id="count-suspect">0</strong></span>
+          <span class="summary-item normal"><i></i>Норма <strong id="count-normal">0</strong></span>
+        </div>
+        <label class="sort-field">Порядок <select id="sort-select"><option value="priority">По важности</option><option value="arrival">Сначала новые</option></select></label>
+      </div>
+      <div class="table-scroll">
+        <table id="records-table">
+          <thead><tr>
+            <th>Исследование</th><th>Поступило</th><th>Важность · NSP</th><th class="truth-column" hidden>Истинный NSP</th><th>Паттерн</th><th class="truth-column" hidden>Истинный паттерн</th>
+            <th><span class="muted">Удалить</span></th>
+          </tr></thead>
+          <tbody id="records-body"></tbody>
+        </table>
+      </div>
+      <div class="empty-state" id="empty-state" hidden><span aria-hidden="true">＋</span><h3>Пока нет исследований</h3><p>Выберите контрольный пример и нажмите «Отправить».</p></div>
+      <footer class="table-footer"><span>NSP — состояние · CLASS — паттерн</span><span>Обновление каждые 5 секунд</span></footer>
+    </section>
+  </main>
+
+  <dialog id="record-dialog" aria-labelledby="dialog-title">
+    <div class="dialog-heading"><div><p class="eyebrow">КАРТОЧКА ИССЛЕДОВАНИЯ</p><h2 id="dialog-title"></h2><p id="dialog-meta" class="muted"></p></div><div class="dialog-actions"><button class="delete-button" id="delete-dialog-record" type="button" aria-label="Удалить исследование"></button><button class="close-button" id="close-dialog" type="button" aria-label="Закрыть карточку">×</button></div></div>
+    <div class="classification-block"><span class="field-label">Предсказание модели</span><div class="badge-group" id="dialog-prediction"></div></div>
+    <div class="classification-block reference-block" id="dialog-reference-block" hidden><span class="field-label">Истинные метки</span><div class="badge-group" id="dialog-reference"></div></div>
+    <h3 class="features-title">Исходные показатели <span>21 признак</span></h3>
+    <div class="features-grid" id="dialog-features"></div>
+  </dialog>
+</body>
+</html>
