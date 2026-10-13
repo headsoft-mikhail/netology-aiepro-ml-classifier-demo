@@ -1,6 +1,7 @@
 import logging
 import os
 import typing
+from importlib.metadata import version
 
 import joblib
 import mlflow
@@ -80,9 +81,9 @@ def train_and_log() -> None:
     }
     train: typing.Final = splits["train"]
     features: typing.Final = schema.feature_columns
-    model_requirements: typing.Final = (
-        (pipeline_settings.models_dir / "requirements.txt").read_text(encoding="utf-8").splitlines()
-    )
+    model_requirements: typing.Final = [
+        f"{package}=={version(package)}" for package in ["scikit-learn", "numpy", "pandas", "cloudpickle"]
+    ]
     pipeline_settings.models_dir.mkdir(parents=True, exist_ok=True)
     pipeline_settings.reports_dir.mkdir(parents=True, exist_ok=True)
     rows: typing.Final = []

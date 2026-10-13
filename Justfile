@@ -32,7 +32,6 @@ lock:
 install:
     uv sync --frozen --all-extras --no-install-project --all-groups
     . ./.venv/bin/activate
-    just _export_model_requirements
 
 # Отформатировать код и выполнить статические проверки.
 lint:
@@ -46,21 +45,20 @@ test:
     mkdir -p "tests"
     uv run pytest --cov=classifier --cov-report=term-missing --cov-report=json:tests/coverage.json
 
-[private]
-_export_model_requirements:
-    mkdir -p runtime/models/classical runtime/models/neural
-    uv export --frozen --no-dev --group data --group tracking \
-        --no-hashes --no-header --no-emit-project --no-annotate \
-        --output-file runtime/models/classical/requirements.txt > /dev/null
-    uv export --frozen --no-dev --group data --group neural --group tracking \
-        --no-hashes --no-header --no-emit-project --no-annotate \
-        --output-file runtime/models/neural/requirements.txt > /dev/null
-
 api:
-    uv run --group service python -m classifier.api
+    #!/usr/bin/env bash
+    set -e
+    mkdir -p runtime/service
+    docker build -f Dockerfile.api -t classifier-api .
+    docker rm -f classifier-api 2>/dev/null || true
+    docker run --rm --name classifier-api --env-file .env \
+        -p "127.0.0.1:${API_PORT:-8001}:${API_PORT:-8001}" \
+        -v "$PWD/runtime/models/classical:/opt/project/runtime/models/classical:ro" \
+        -v "$PWD/runtime/service:/opt/project/runtime/service" \
+        classifier-api
 
 # Поднять Airflow и выполнить все задачи DAG.
-pipeline: _export_model_requirements mlflow-start
+pipeline: mlflow-start
     #!/usr/bin/env bash
     set -e
     mkdir -p runtime/airflow
@@ -68,7 +66,6 @@ pipeline: _export_model_requirements mlflow-start
     docker rm -f classifier-airflow 2>/dev/null || true
     trap 'docker rm -f classifier-airflow >/dev/null 2>&1 || true' EXIT
     docker run -d --name classifier-airflow --env-file .env \
-        -e MLFLOW_HOST=host.docker.internal \
         -p "127.0.0.1:$AIRFLOW_PORT:8080" \
         -v "$PWD/src:/opt/project/src:ro" \
         -v "$PWD/runtime:/opt/project/runtime" \

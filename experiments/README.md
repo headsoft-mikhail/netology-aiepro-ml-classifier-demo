@@ -7,4 +7,17 @@
 
 В `ctg_cleaned.csv` сохраняются все колонки после очистки. В train/validation/test сохраняются 21 входной признак и две цели. Идентификаторы удаляются после группового разбиения; индикаторы паттернов исключаются. CLASS и NSP не подаются на вход модели.
 
-Все четыре этапа исследования выполнены. Для сервиса выбраны оптимизированные RandomForest для обеих целей; MLP остаётся альтернативой. Подготовка и обучение RandomForest перенесены в [Airflow-пайплайн](../docs/pipeline-plan.md). Следующий этап — сервис. Обязательные требования сдачи перечислены в [сверке с заданием](../docs/assignment-checklist.md).
+Все четыре этапа исследования выполнены. Для сервиса выбраны оптимизированные RandomForest для обеих целей; MLP остаётся альтернативой. Подготовка и обучение RandomForest перенесены в [Airflow-пайплайн](../src/classifier/pipeline/dag.py). FastAPI и frontend реализованы; оставшиеся требования сдачи перечислены в [актуальной сверке](../docs/submission-gaps.md).
+
+
+При пакетном повторном выполнении отключаем запись времени ячеек и состояния виджетов:
+
+```bash
+just --command uv run --group research --group tracking jupyter nbconvert \
+  --execute --inplace --ExecutePreprocessor.timeout=1800 \
+  --ExecutePreprocessor.record_timing=False --ExecutePreprocessor.store_widget_state=False \
+  experiments/01_eda.ipynb experiments/02_preparation.ipynb \
+  experiments/03_classical_models.ipynb experiments/04_neural_models.ipynb
+```
+
+В репозитории сохраняются код, пояснения, таблицы и графики. Служебные временные отметки и состояния индикаторов прогресса не сохраняются. Интерактивный запуск в Jupyter может создать их снова; перед коммитом их нужно убрать.
