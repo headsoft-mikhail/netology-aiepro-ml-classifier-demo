@@ -60,7 +60,7 @@ UCI ZIP → Airflow: скачать → подготовить → обучит�
 
 - `src/classifier/pipeline/`: DAG, загрузка, подготовка, обучение, схема данных и настройки.
 - `src/classifier/api/`: FastAPI, модели HTTP-контракта, зависимости, ресурсы, repositories и use case отправки.
-- `src/frontend/`: страница без отдельной сборки, раздаётся FastAPI.
+- `src/classifier/frontend/`: страница без отдельной сборки, раздаётся FastAPI.
 - `experiments/`: четыре блокнота и настройки экспериментов.
 - `tests/`: тесты подготовки, предсказания, API и отчёты проверок.
 
