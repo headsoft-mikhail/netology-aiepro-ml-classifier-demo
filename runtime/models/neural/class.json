@@ -1,0 +1,67 @@
+{
+  "target": "CLASS",
+  "features": [
+    "LB",
+    "AC",
+    "FM",
+    "UC",
+    "ASTV",
+    "MSTV",
+    "ALTV",
+    "MLTV",
+    "DL",
+    "DS",
+    "DP",
+    "Min",
+    "Max",
+    "Nmax",
+    "Nzeros",
+    "Mode",
+    "Mean",
+    "Median",
+    "Variance",
+    "Tendency",
+    "duration"
+  ],
+  "target_mapping": {
+    "1": "A",
+    "2": "B",
+    "3": "C",
+    "4": "D",
+    "5": "E",
+    "6": "AD",
+    "7": "DE",
+    "8": "LD",
+    "9": "FS",
+    "10": "SUSP"
+  },
+  "parameters": {
+    "hidden_layers": [
+      32
+    ],
+    "dropout": 0.0,
+    "learning_rate": 0.003,
+    "max_epochs": 150,
+    "patience": 20,
+    "weight_decay": 0.0,
+    "use_class_weights": false
+  },
+  "random_state": 42,
+  "batch_size": 32,
+  "best_epoch": 33,
+  "epochs_completed": 53,
+  "mlflow_run_id": "2bcca84c4a9a4f7f9959d066a4e09163",
+  "validation_metrics": {
+    "validation_loss": 0.38716769218444824,
+    "validation_macro_f1": 0.8429161319847799,
+    "validation_weighted_f1": 0.8754337838232467,
+    "validation_accuracy": 0.8764845605700713
+  },
+  "test_metrics": {
+    "accuracy": 0.7624703087885986,
+    "macro_f1": 0.7015551270425892,
+    "weighted_f1": 0.7620578255244213,
+    "macro_precision": 0.7597754616241827,
+    "macro_recall": 0.683015915244176
+  }
+}

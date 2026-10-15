@@ -6,6 +6,7 @@ __pycache__/
 *.log
 
 /runtime/*
+!/runtime/models/
 /mlruns/
 /docs/
 

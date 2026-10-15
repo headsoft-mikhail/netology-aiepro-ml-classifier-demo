@@ -1,0 +1,60 @@
+{
+  "target": "NSP",
+  "features": [
+    "LB",
+    "AC",
+    "FM",
+    "UC",
+    "ASTV",
+    "MSTV",
+    "ALTV",
+    "MLTV",
+    "DL",
+    "DS",
+    "DP",
+    "Min",
+    "Max",
+    "Nmax",
+    "Nzeros",
+    "Mode",
+    "Mean",
+    "Median",
+    "Variance",
+    "Tendency",
+    "duration"
+  ],
+  "target_mapping": {
+    "1": "Normal",
+    "2": "Suspect",
+    "3": "Pathologic"
+  },
+  "parameters": {
+    "hidden_layers": [
+      64
+    ],
+    "dropout": 0.3,
+    "learning_rate": 0.002123131799850343,
+    "max_epochs": 150,
+    "patience": 20,
+    "weight_decay": 0.01,
+    "use_class_weights": true
+  },
+  "random_state": 42,
+  "batch_size": 32,
+  "best_epoch": 6,
+  "epochs_completed": 26,
+  "mlflow_run_id": "b7759a49446c4cf1ba925f193e341f2e",
+  "validation_metrics": {
+    "validation_loss": 0.4100663661956787,
+    "validation_macro_f1": 0.8654671945946939,
+    "validation_weighted_f1": 0.9222952871697391,
+    "validation_accuracy": 0.9168646080760094
+  },
+  "test_metrics": {
+    "accuracy": 0.828978622327791,
+    "macro_f1": 0.708243563106175,
+    "weighted_f1": 0.8453831649059935,
+    "macro_precision": 0.6695309990362993,
+    "macro_recall": 0.7892915577654533
+  }
+}
